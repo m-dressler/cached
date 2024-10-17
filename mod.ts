@@ -10,6 +10,30 @@ export type Cache<T extends (...args: unknown[]) => Promise<unknown>> = {
   };
 };
 
+/**
+ * Thin wrapper around a request function to cache the result for a certain amount of time
+ * 
+ * @example
+ * ```ts
+ * import cached from "@md/cached";
+ * 
+ * // This will wrap the provided function to cache the result for 10 seconds
+ * const getRemoteFile = cached(async (name: string) => {
+ *   const response = await fetch("https://example.com/" + name);
+ *   return response.text();
+ * }, 10_000);
+ * 
+ * await getRemoteFile("hello"); // Requests the file
+ * await getRemoteFile("hello"); // Uses the cache instead
+ * await getRemoteFile("world"); // Requests a different file
+ * await new Promise(r=>setTimeout(r, 11_000)); // Let cache expire
+ * await getRemoteFile("world"); // Requests the file again as the cache has become stale
+ * ```
+ * 
+ * @param request The request to cache
+ * @param cacheMs The amount of time in milliseconds until the cache becomes state
+ * @returns A cached version of {@link request}
+ */
 // deno-lint-ignore no-explicit-any
 export default function cached<T extends (...args: any[]) => Promise<any>>(
   request: T,
