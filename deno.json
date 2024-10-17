@@ -1,0 +1,13 @@
+{
+  "name": "@md/cached",
+  "version": "0.0.0",
+  "license": "ISC",
+  "exports": "./mod.ts",
+  "exclude": [
+    ".github/",
+    ".gitignore"
+  ],
+  "imports": {
+    "object-hash": "npm:object-hash@^3.0.0"
+  }
+}
